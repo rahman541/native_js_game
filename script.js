@@ -9,7 +9,29 @@ var ballRadius=10
 
 var paddleHeight = 10	// in pixel.. same for width
 var paddleWidth = 75
-paddleX = (canvas.width - paddleWidth) / 2
+var paddleX = (canvas.width - paddleWidth) / 2
+var paddleDx = 7
+
+// Tracking right press / left press
+var rightPressed
+var leftPressed
+function keyDownHandler(event) {
+	if (event.keyCode == 39) {
+		rightPressed = true
+	} else if (event.keyCode == 37) {
+		leftPressed = true
+	}
+}
+function keyUpHandler(event) {
+	if (event.keyCode == 39) {
+		rightPressed = false
+	} else if (event.keyCode == 37) {
+		leftPressed = false
+	}
+}
+
+document.addEventListener('keydown', keyDownHandler, false)
+document.addEventListener('keyup', keyUpHandler, false)
 
 function drawBall() {
 	ctx.beginPath()
@@ -38,6 +60,12 @@ function draw() {
 	}
 	if (y + dy < ballRadius) {
 		dy = -dy
+	}
+
+	if (rightPressed && (paddleX + paddleWidth) < canvas.width) {
+		paddleX += paddleDx
+	} else if (leftPressed && paddleX > 0) {
+		paddleX -= paddleDx
 	}
 
 	x += dx
