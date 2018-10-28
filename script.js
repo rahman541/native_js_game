@@ -58,8 +58,17 @@ function draw() {
 	if (x + dx > canvas.width - ballRadius || x+dx<ballRadius) {
 		dx = -dx
 	}
-	if (y + dy < ballRadius) {
+	if (
+		y + dy < ballRadius ||
+		(
+			y + dy > canvas.height - paddleHeight - ballRadius &&
+			x + dx > paddleX &&
+			x + dx < paddleX + paddleWidth
+		)
+	) {
 		dy = -dy
+	} else if (y + dy > canvas.height) {
+		location.reload()
 	}
 
 	if (rightPressed && (paddleX + paddleWidth) < canvas.width) {
